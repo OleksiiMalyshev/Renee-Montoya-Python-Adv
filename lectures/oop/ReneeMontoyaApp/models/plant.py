@@ -10,16 +10,6 @@ class Plant(Model):
         self.name = name
         self.director_id = director_id
 
-    def _generate_dict(self):
-        return {
-            'id': self.id,
-            'location': self.location,
-            'name': self.name,
-            'director_id': self.director_id
-        }
-
-    def save(self):
-        plant_in_dict_format = self._generate_dict()
-        plants = self.get_file_data(self.file)
-        plants.append(plant_in_dict_format)
-        self.save_to_file(plants)
+    def __str__(self):
+        return f'Plant(id={self.id}, name={self.name},' \
+               f' location={self.location}, director_id={self.director_id})'

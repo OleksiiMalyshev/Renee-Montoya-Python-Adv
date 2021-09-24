@@ -5,13 +5,14 @@ import json
 class Model(ABC):
     file = 'default.json'
 
-    @abstractmethod
     def save(self):
-        pass
+        info_in_dict_format = self._generate_dict()
+        info = self.get_file_data(self.file)
+        info.append(info_in_dict_format)
+        self.save_to_file(info)
 
-    @abstractmethod
     def _generate_dict(self):
-        pass
+        return {field_name: getattr(self, field_name) for field_name in self.__dict__}
 
     @classmethod
     def get_by_id(cls, id):
@@ -25,17 +26,15 @@ class Model(ABC):
     @classmethod
     def get_all(cls):
         data = cls.get_file_data(cls.file)
-        return data
+        return map(lambda el: cls(**el), data)
 
     @staticmethod
     def get_file_data(file_name):
-        file = open("database/" + file_name, 'r')
-        data = json.loads(file.read())
-        file.close()
-        return data
+        with open("database/" + file_name, 'r') as file:
+            data = json.loads(file.read())
+            return data
 
     def save_to_file(self, data):
         data = json.dumps(data)
-        file = open('database/' + self.file, "w")
-        file.write(data)
-        file.close()
+        with open('database/' + self.file, "w") as file:
+            file.write(data)
