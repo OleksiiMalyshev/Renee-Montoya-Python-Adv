@@ -13,8 +13,8 @@ class TestEmployee(unittest.TestCase):
 
 
     @patch('models.Plant.get_by_id')
-    def test_department(self, plantMock):
-        plantMock.return_value = self.plant
+    def test_department(self, mock_get_by_id):
+        mock_get_by_id.return_value = self.plant
         self.assertEqual(self.employee.department(), self.plant)
 
     @patch('models.Plant.get_by_id')
