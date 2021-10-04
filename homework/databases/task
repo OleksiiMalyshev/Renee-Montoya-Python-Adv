@@ -1,12 +1,102 @@
 1. Insert dump (my_items) to your local database.
+
+	sudo mysql homework < my_items.sql
+	mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| homework           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_homework |
++--------------------+
+| users              |
++--------------------+
+1 row in set (0.01 sec)
+
+
     Create additional table phones with fields:
         id, phone_name, company_id, user_id
+
+mysql> CREATE TABLE phones (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, phone_name CHAR(20) DEFAULT NULL, compaNy_id INT NOT NULL,user_id INT NOT NULL);
+Query OK, 0 rows affected (0.41 sec)
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_homework |
++--------------------+
+| phones             |
+| users              |
++--------------------+
+2 rows in set (0.01 sec)
+
+
     Create additional table phone_companies with fields:
         id, name
+
+mysql> CREATE TABLE phone_companies(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, name CHAR(40) DEFAULT NULL);
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_homework |
++--------------------+
+| phone_companies    |
+| phones             |
+| users              |
++--------------------+
+3 rows in set (0.00 sec)
+
+
      Write select and save it to file to get users is developers.
+mysql> SELECT * FROM users WHERE is_developer = 1;
++----+------------+-----------+---------------------------------------------------+--------------+----------------+
+| id | first_name | last_name | about_me                                          | is_developer | email          |
++----+------------+-----------+---------------------------------------------------+--------------+----------------+
+|  1 | Liubomyr   | Luzhnyi   | bla bla bla bla bla lb a bla bla bla bla bla bla  |            1 | test@email.com |
+|  3 | Vasyl      | Mykutko   | bla bla bla bla                                   |            1 | test@email.com |
+|  4 | Roman      | Bondar    | bla bla bla bla bla lb a bla bla bla bla bla bla1 |            1 | test@email.com |
++----+------------+-----------+---------------------------------------------------+--------------+----------------+
+3 rows in set (0.00 sec)
+
      Insert xiaomi, apple, samsung to companies.
+mysql> INSERT INTO phone_companies (name) VALUES ('xiaomi');
+mysql> INSERT INTO phone_companies (name) VALUES ('apple');
+mysql> INSERT INTO phone_companies (name) VALUES ('samsung');
+
      Insert 3 phone (with any data) to phones.
+mysql> INSERT INTO phones(phone_name, company_id, user_id) VALUES ('+38011111111', 1, 1);
+mysql> INSERT INTO phones(phone_name, company_id, user_id) VALUES ('+3802222222', 1, 3);
+mysql> INSERT INTO phones(phone_name, company_id, user_id) VALUES ('+38033333333', 1, 4);
+
      Write select and save it to file to get phones where company_id=XIAOMI COMPANY ID.
      send file dump of your database and file with your select and insert queries.
 
+mysql> SELECT * FROM phones WHERE company_id = 1;
++----+--------------+------------+---------+
+| id | phone_name   | company_id | user_id |
++----+--------------+------------+---------+
+|  1 | +38011111111 |          1 |       1 |
+|  2 | +3802222222  |          1 |       3 |
+|  3 | +38033333333 |          1 |       4 |
++----+--------------+------------+---------+
+
+sudo mysqldump -u root -p homework > ~/homework.sql
+
 2.* Select all users which have phones.
+
+mysql> SELECT * FROM users INNER JOIN phones ON users.id = phones.user_id;
++----+------------+-----------+---------------------------------------------------+--------------+----------------+----+--------------+------------+---------+
+| id | first_name | last_name | about_me                                          | is_developer | email          | id | phone_name   | company_id | user_id |
++----+------------+-----------+---------------------------------------------------+--------------+----------------+----+--------------+------------+---------+
+|  1 | Liubomyr   | Luzhnyi   | bla bla bla bla bla lb a bla bla bla bla bla bla  |            1 | test@email.com |  1 | +38011111111 |          1 |       1 |
+|  3 | Vasyl      | Mykutko   | bla bla bla bla                                   |            1 | test@email.com |  2 | +3802222222  |          1 |       3 |
+|  4 | Roman      | Bondar    | bla bla bla bla bla lb a bla bla bla bla bla bla1 |            1 | test@email.com |  3 | +38033333333 |          1 |       4 |
++----+------------+-----------+---------------------------------------------------+--------------+----------------+----+--------------+------------+---------+
