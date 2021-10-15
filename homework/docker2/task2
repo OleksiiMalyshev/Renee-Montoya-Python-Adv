@@ -2,7 +2,7 @@
 
 1. docker-compose up --build -d
 2. docker exec -it docker2-mysql-1 mkdir /myworkdir
-3. cp .\shop.sql docker2-mysql-1:/myworkdir
+3. docker cp .\shop.sql docker2-mysql-1:/myworkdir
 4. docker exec -t -i docker2-mysql-1 /bin/bash
 
 5. mysql -u root -p
