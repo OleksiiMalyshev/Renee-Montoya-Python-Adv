@@ -1,0 +1,33 @@
+1. Move your local shop database to docker container with mysql
+
+1. docker-compose up --build -d
+2. docker exec -it docker2-mysql-1 mkdir /myworkdir
+3. cp .\shop.sql docker2-mysql-1:/myworkdir
+4. docker exec -t -i docker2-mysql-1 /bin/bash
+
+5. mysql -u root -p
+6. mysql> CREATE DATABASE dockerdatabase;
+7. mysql> EXIT
+8. mysql -u root -p dockerdatabase < shop.sql
+9. mysql -u root -p
+   mysql> SHOW DATABASES;
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | dockerdatabase     |
+    | information_schema |
+    | mysql              |
+    | performance_schema |
+    | sys                |
+    +--------------------+
+10. mysql> USE dockerdatabase;
+11. mysql> SHOW TABLES;
+    +--------------------------+
+    | Tables_in_dockerdatabase |
+    +--------------------------+
+    | categories               |
+    | categories_products      |
+    | product_images           |
+    | products                 |
+    | users                    |
+    +--------------------------+

@@ -10,3 +10,4 @@ services:
       - .:/docker
     ports:
       - "5050:5050"
+
